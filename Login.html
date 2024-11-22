@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blush Bunnie - Member Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #FF69B4;
+            --secondary-color: #FFC0CB;
+            --text-color: #333;
+            --background-color: #FFF0F5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background: linear-gradient(135deg, #FFC0CB, #FF69B4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 2rem;
+            font-size: 2.5rem; /* Larger heading */
+            color: var(--primary-color);
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 1rem;
+            margin: 0.8rem 0;
+            border-radius: 25px;
+            border: 1px solid var(--primary-color);
+            font-size: 1.2rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-container input:focus {
+            border-color: var(--secondary-color);
+        }
+
+        .login-container button {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem; /* Larger button text */
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-container button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .login-container a {
+            display: block;
+            margin-top: 1.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.1rem; /* Larger text for links */
+        }
+
+        .login-container a:hover {
+            color: var(--secondary-color);
+        }
+
+        .forgot-password {
+            font-size: 1rem; /* Increased size */
+            margin-top: 1rem;
+            display: block;
+            color: var(--primary-color);
+        }
+
+        .forgot-password:hover {
+            color: var(--secondary-color);
+        }
+
+        @media (min-width: 768px) {
+            .login-container {
+                max-width: 750px; /* Wider container for medium screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login to Blush Bunnie</h2>
+        <form action="#" method="post" onsubmit="handleLogin(event)">
+            <input type="email" name="email" placeholder="Email Address" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <a href="#" class="forgot-password">Forgot your password?</a>
+            <button type="submit">Login</button>
+        </form>
+        <a href="Register.html">Don't have an account? Register here</a>
+    </div>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault(); // Prevents the form from submitting the default way
+
+            // Basic form validation (you could add more checks here if needed)
+            const form = event.target;
+            const email = form.email.value;
+            const password = form.password.value;
+
+            // For demonstration purposes, this simulates a successful login
+            // In a real-world scenario, you would send the data to the server for validation.
+            if (email && password) {
+                alert("Login successful!");
+                window.location.href = "homepage1.html"; // Redirects to the homepage
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+    </script>
+</body>
+</html>

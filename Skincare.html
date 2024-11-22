@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlushBunnie - Skincare Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #FF69B4;
+            --secondary-color: #FFC0CB;
+            --text-color: #333;
+            --background-color: #FFF0F5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 25px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin: 0 1rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+		
+		.add-to-cart-btn{
+			background-color: var(--primary-color);
+			color: #fff;
+			font-size:16px;
+			font-weight: 600;
+			border: none;
+			padding: 8px 12px;
+			border-radius: 20px;
+			cursor: pointer;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+			transition:background-color 0.3s ease, box-shadow 0.3s ease;
+			display:inline-block;
+			text-align:center;
+			}
+		
+		.add-to-cart-btn:hover{
+			background-color:#ff85bc;
+			box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+			transform: translateY(-2px);
+		}
+		
+
+        .cart-icon {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .cart-icon::after {
+            content: '0';
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: var(--secondary-color);
+            color: #fff;
+            font-size: 0.7rem;
+            border-radius: 50%;
+            padding: 2px 5px;
+        }
+			/* CSS for cart icon with dynamic badge */
+.cart-icon[data-count]:after {
+    content: attr(data-count);
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: var(--secondary-color);
+    color: #fff;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    padding: 2px 5px;
+}
+
+        /* Skincare Product Section */
+        .product-page {
+            padding: 90px 10%;
+        }
+
+        .product-page h2 {
+            text-align: center;
+            margin-bottom: 48px ;
+            font-size: 40px;
+            color: var(--primary-color);
+        }
+
+        .product-category {
+            margin-bottom: 64px;
+        }
+
+        .product-category h3 {
+            margin-bottom: 24px;
+            font-size: 30px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 9px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product {
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+		.stars{
+			color: #FFD700;
+			margin-bottom: 5px;
+		}
+		
+		.stars i{
+			margin-right: 2px;
+			font-size: 10px;
+		}
+
+        .product:hover {
+            transform: translateY(-10px);
+        }
+
+        .product img {
+            width: 100%;
+            height: 350px;
+			max-weight: 350px;
+            object-fit: fill;
+			border-radius: 10px;
+        }
+
+        .product-info {
+            padding: 16px;
+        }
+
+        .product h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .product p {
+            color: #333;
+            font-weight: 600;
+        }
+		  /* Add to Cart & Shade Section */
+        .add-to-cart {
+            margin-top: 15px;
+			margin-bottom: auto;
+        }
+
+        .shade-select {
+            margin-top: 5px;
+        }
+
+        .shade-select label {
+            display: block;
+            font-size: 16px;
+			color: #7E167E;
+            margin-bottom: 5px;
+        }
+
+        .shade-select select {
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 2rem 5%;
+            text-align: center;
+        }
+		
+
+		 /* Dropdown Menu */
+		.nav-links{
+			position: relative;
+		}
+		
+		.nav-links li{
+			position: relative;
+		}
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: #F8F6F0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            top: 100%;
+            left: 0;
+            padding: 1rem;
+			z-index:1000;
+			min-width: 180px;
+        }
+
+        .nav-links li:hover .dropdown {
+            display: block;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 0.5rem 0;
+            color: #var(--primary-color);
+			text-decoration: none;
+        }
+
+        .dropdown a:hover {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="bunnie.jpg" alt="BlushBunnie Logo">
+                <h1>BLUSH BUNNIE</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="homepage1.html">Home</a></li>
+                <li>
+                    <a href="#shop">Shop</a>
+                    <div class="dropdown">
+                        <a href="Makeup.html">Makeup Products</a>
+                        <a href="Skincare.html">SkinCare Products</a>
+                        <a href="Haircare.html">HairCare Products</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#Sale">Sales</a>
+                    <div class="dropdown">
+                        <a href="limited.html">Limited Time Offers</a>
+                    </div>
+                </li>
+                <li><a href="About.html">About</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+				<!-- Customer Information Dropdown -->
+				<li>
+				<a href="#">
+					<i class="fas fa-user"></i> Customer
+					</a>
+				<div class="dropdown">
+					<a href="profile.html">Profile</a>
+					<a href="Login.html"> Sign Out</a></div>
+				</li>
+                <li><a href="Cart.html" class="cart-icon"><i class="fas fa-shopping-cart"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="product-page">
+        <h2>Our Skincare Collection</h2>
+
+        <!-- Cleansers Category -->
+        <div class="product-category">
+            <h3>Cleansers</h3>
+            <div class="product-grid">
+                <div class="product">
+                    <img src="tatagaltier cleanser.jpg" alt="Gentle Foaming Cleanser">
+                    <div class="product-info">
+                        <h4>TATAGALTIER CelaGrail Cleanser Gel</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+        </div>
+                        <p>RM45.00</p>
+						<p>This refreshing gel cleanser purifies and hydrates, balancing the skin’s natural moisture for a smooth, clean feel.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('TATAGALTIER CelaGrail Cleanser Gel', 45.00)"> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="wawa cleanser.jpg" alt="Deep Cleanse Gel">
+                    <div class="product-info">
+                        <h4>WAWA COSMETICS CLEANSER</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+        </div>
+                        <p>RM29.90</p>
+						<p> A mild cleanser that gently foams to remove impurities and makeup, leaving skin soft and refreshed without stripping natural oils.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('WAWA COSMETICS CLEANSER',29.90)"> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Moisturizers Category -->
+        <div class="product-category">
+            <h3>Moisturizers</h3>
+            <div class="product-grid">
+                <div class="product">
+                    <img src="nuuha moist.jpg" alt="Hydrating Day Cream">
+                    <div class="product-info">
+                        <h4>NUUHA BEAUTY 7X Peptide Ultimate Glass Skin Moisturiser</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+        </div>
+                        <p>RM88.80</p>
+						<p>A rich, creamy moisturizer that deeply nourishes and hydrates dry skin, restoring its suppleness and elasticity.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('NUUHA BEAUTY 7X Peptide Ultimate Glass Skin Moisturiser',88.80)"> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="kayman moist.jpg" alt="Nourishing Night Cream">
+                    <div class="product-info">
+                        <h4>KAYMAN BEAUTY Moist Gel</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+        </div>
+                        <p>RM65.00</p>
+						<p>A lightweight, fast-absorbing cream that provides all-day hydration and a radiant, healthy glow, perfect for everyday use.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('KAYMAN BEAUTY Moist Gel',65.00)"> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Serums Category -->
+        <div class="product-category">
+            <h3>Serums</h3>
+            <div class="product-grid">
+                <div class="product">
+                    <img src="zz serum.jpg" alt="Vitamin C Serum">
+                    <div class="product-info">
+                        <h4>ZARZOU Brightening & Hydrating Facial Serum</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+        </div>
+                        <p>RM39.95</p>
+						<p>Infused with vitamin C, this serum brightens and evens skin tone, revealing a radiant and revitalized complexion.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('ZARZOU Brightening & Hydrating Facial Serum',39.95)"> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="ainaa serum.jpg" alt="Hyaluronic Acid Serum">
+                    <div class="product-info">
+                        <h4>AINAASERUM Acne Relief</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+        </div>
+                        <p>RM59.00</p>
+						<p> A powerful serum with hyaluronic acid that intensely hydrates, plumping the skin and reducing the appearance of fine lines.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('AINAASERUM Acne Relief',59.00)"> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sunscreens Category -->
+        <div class="product-category">
+            <h3>Sunscreens</h3>
+            <div class="product-grid">
+                <div class="product">
+                    <img src="kekasih sunscreen.jpg" alt="SPF 30 Sunblock">
+                    <div class="product-info">
+                        <h4>KEKASIH SUNSCREEN</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+        </div>
+                        <p>RM42.89</p>
+						<p>This ultra-lightweight, fast-absorbing sunscreen with SPF 50 offers broad-spectrum protection against UVA and UVB rays. It provides a matte finish that feels comfortable on the skin, ideal for everyday wear under makeup.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('KEKASIH SUNSCREEN',42.89)"> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="tatagaltier sunscreen.jpg" alt="SPF 50 Daily Sunscreen">
+                    <div class="product-info">
+                        <h4>TATAGALTIER Sun Shield</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+        </div>
+                        <p>RM45.00</p>
+						<p>Lightweight and non-greasy, this sunscreen provides broad-spectrum protection against UV rays, keeping skin safe from sun damage.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('TATAGALTIER Sun Shield',45.00)"> Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+		 <!-- Set Skincare Category -->
+        <div class="product-category">
+            <h3> SkinCare Set</h3>
+            <div class="product-grid">
+                <div class="product">
+                    <img src="ainaa set.jpg" alt="SPF 30 Sunblock">
+                    <div class="product-info">
+                        <h4>AINAA Beauty SkinCare Set</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+        </div>
+                        <p>RM181.00</p>
+						<p>A simple routine for radiant skin, with a gentle cleanser, hydrating toner, and nourishing moisturizer. Ideal for daily glow.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('AINAA Beauty SkinCare Set',181.00)"> Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product">
+                    <img src="mimpimika set.jpg" alt="MIMPIMIKA SET">
+                    <div class="product-info">
+                        <h4>MIMPIMIKA FULL SET</h4>
+						 <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+        </div>
+                        <p>RM193.00</p>
+						<p>Revitalize skin with a cleanser, anti-aging serum, and SPF 30 moisturizer for a youthful, vibrant look.</p>
+						<button class="add-to-cart-btn" onclick="addToCart('MIMPIMIKA FULL SET',193.00)"> Add to Cart</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+    </section>
+	 <script>
+		 <!-- Script to handle cart functionality -->
+
+    // Function to add items to the cart
+    function addToCart(name, price) {
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        
+        // Check if item is already in the cart
+        const existingItem = cartItems.find(item => item.name === name);
+        
+        // If item exists, increase quantity; otherwise, add new item
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cartItems.push({ name, price, quantity: 1 });
+        }
+        
+        // Save updated cart items back to local storage
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        
+        // Show confirmation alert
+        alert(`${name} has been added to your cart.`);
+        
+        // Update cart icon badge
+        updateCartBadge();
+    }
+
+    // Function to update cart icon badge with item count
+    function updateCartBadge() {
+        const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        
+        // Find the cart icon element and update its badge
+        const cartIcon = document.querySelector('.cart-icon');
+        cartIcon.setAttribute('data-count', totalCount); // Use data attribute for flexibility
+    }
+
+    // Initialize cart badge on page load
+    document.addEventListener('DOMContentLoaded', updateCartBadge);
+</script>
+
+    <footer>
+        <p>&copy; 2024 BlushBunnie. All rights reserved.</p>
+        <a href="Skincare.html" class="back-to-top">Back to top</a>
+    </footer>
+</body>
+</html>

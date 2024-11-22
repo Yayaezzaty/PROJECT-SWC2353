@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlushBunnie - Shopping Cart</title>
+    <style>
+        /* Enhanced CSS for Shopping Cart */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffe4e1, #ff69b4);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .cart-container {
+            max-width: 800px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            margin: 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #ff69b4;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 1.3em;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-controls button {
+            padding: 10px 15px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s ease;
+        }
+
+        .quantity-controls button:hover {
+            background-color: #ff539c;
+        }
+
+        .total {
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .payment-methods {
+            margin-top: 30px;
+            text-align: left;
+            font-size: 1.2em;
+        }
+
+        .payment-methods h3 {
+            color: #ff69b4;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .payment-methods label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .payment-methods input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.5);
+            cursor: pointer;
+        }
+
+        .payment-form {
+            display: none;
+            margin-top: 25px;
+            text-align: left;
+        }
+
+        .payment-form input[type="text"],
+        .payment-form input[type="number"],
+        .payment-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-size: 1.2em;
+        }
+
+        .checkout-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 20px 40px;
+            background-color: #ff69b4;
+            color: white;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: #ff539c;
+            transform: scale(1.05);
+        }
+
+        @media (min-width: 1024px) {
+            .cart-container {
+                max-width: 800px;
+            }
+
+            h2 {
+                font-size: 3em;
+            }
+
+            .cart-item {
+                font-size: 1.5em;
+            }
+
+            .checkout-btn {
+                padding: 20px 50px;
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <h2>Your Shopping Cart</h2>
+        <div id="cartItems"></div>
+        <div class="total" id="cartTotal">Total: RM0.00</div>
+
+        <!-- Payment Method Section -->
+        <div class="payment-methods">
+            <h3>Choose Payment Method</h3>
+            <label>
+                <input type="radio" name="payment" value="credit" onclick="showPaymentForm('credit')"> Credit Card
+            </label>
+            <label>
+                <input type="radio" name="payment" value="tng" onclick="showPaymentForm('tng')"> TNG eWallet
+            </label>
+            <label>
+                <input type="radio" name="payment" value="cod" onclick="showPaymentForm('cod')"> Cash on Delivery
+            </label>
+        </div>
+
+        <!-- Payment Forms -->
+        <div class="payment-form" id="creditForm">
+            <h3>Credit Card Details</h3>
+            <input type="text" placeholder="Cardholder Name" id="cardName">
+            <input type="number" placeholder="Card Number" id="cardNumber">
+            <input type="text" placeholder="Expiration Date (MM/YY)" id="cardExp">
+            <input type="number" placeholder="CVV" id="cardCVV">
+        </div>
+
+        <div class="payment-form" id="tngForm">
+            <h3>TNG eWallet Payment</h3>
+            <input type="text" placeholder="Enter your TNG eWallet Phone Number" id="tngPhoneNumber">
+        </div>
+
+        <div class="payment-form" id="codForm">
+            <h3>Delivery Address</h3>
+            <textarea placeholder="Enter your delivery address" id="codAddress"></textarea>
+        </div>
+
+        <!-- Complete Purchase Button -->
+        <a href="receipt.html" class="checkout-btn" onclick="completePurchase()">Complete Purchase</a>
+    </div>
+
+    <script>
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+        function displayCartItems() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            cartItems.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                cartItemsContainer.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <span>RM${item.price} x ${item.quantity}</span>
+                        <div class="quantity-controls">
+                            <button onclick="updateQuantity(${index}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, 1)">+</button>
+                        </div>
+                        <span>RM${itemTotal.toFixed(2)}</span>
+                    </div>
+                `;
+            });
+            cartTotal.innerHTML = `<strong>Total: RM${total.toFixed(2)}</strong>`;
+        }
+
+        function updateQuantity(index, change) {
+            cartItems[index].quantity += change;
+            if (cartItems[index].quantity <= 0) {
+                cartItems.splice(index, 1);
+            }
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            displayCartItems();
+        }
+
+        function showPaymentForm(method) {
+            document.getElementById('creditForm').style.display = method === 'credit' ? 'block' : 'none';
+            document.getElementById('tngForm').style.display = method === 'tng' ? 'block' : 'none';
+            document.getElementById('codForm').style.display = method === 'cod' ? 'block' : 'none';
+        }
+
+        function completePurchase() {
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            if (!paymentMethod) {
+                alert("Please select a payment method.");
+                return;
+            }
+
+            if (paymentMethod.value === 'credit') {
+                const cardName = document.getElementById('cardName').value;
+                const cardNumber = document.getElementById('cardNumber').value;
+                const cardExp = document.getElementById('cardExp').value;
+                const cardCVV = document.getElementById('cardCVV').value;
+
+                if (!cardName || !cardNumber || !cardExp || !cardCVV) {
+                    alert("Please fill out all credit card details.");
+                    return;
+                }
+            } else if (paymentMethod.value === 'tng') {
+                const tngPhoneNumber = document.getElementById('tngPhoneNumber').value;
+                if (!tngPhoneNumber) {
+                    alert("Please enter your TNG eWallet phone number.");
+                    return;
+                }
+            } else if (paymentMethod.value === 'cod') {
+                const codAddress = document.getElementById('codAddress').value;
+                if (!codAddress) {
+                    alert("Please enter your delivery address for Cash on Delivery.");
+                    return;
+                }
+            }
+
+            alert("Thank you for your purchase!");
+            localStorage.removeItem('cartItems');
+            window.location.href = "receipt.html"; // Adjust as needed
+        }
+
+        displayCartItems();
+    </script>
+</body>
+</html>
